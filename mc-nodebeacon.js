@@ -128,4 +128,5 @@ if (cluster.isMaster) {
 );
  
 // set server to listen for requests at port 8080
-server.listen( 8080 );
+  }).listen( 8080 );
+}
