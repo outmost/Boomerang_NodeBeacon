@@ -123,9 +123,6 @@ if (cluster.isMaster) {
         c.timing(domain+'.devices.'+device+'.pageDone', t_done);
  
         c.timing(domain+'.visitors.'+visit_type+'.pageDone', t_done);
-        }
- 
-);
  
 // set server to listen for requests at port 8080
   }).listen( 8080 );
