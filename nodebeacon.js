@@ -31,36 +31,39 @@ function (request, response) {
         // Parse Request URL
         var url_parts = url.parse(request.url,true);
  
-        // Parse Domain using tldtools
+        // Parse "hostname" parameter from request URL using tldtools
         var hostname = url_parts.query.hostname;
 		var domain = tldtools.extract(hostname);
 		var root = domain.domain;
+		// get TLD (.com / .co.uk / .de ... etc)
 		var tld = domain.tld;
+		// check if subdomain (inc www), if no subdomain then assign to www
 		if(domain.subdomain.length < 1) { 
 			var subdomain = "www"; 
 			} 
 		else { 
 			var subdomain = domain.subdomain; 
 			}
+		// http or https?
 		var protocol = domain.url_tokens.protocol;
 		
-		
-        var page_type = url_parts.query.page_type;
+		var page_type = url_parts.query.page_type;
         var user_status = url_parts.query.user_status;
  
-        // Parse User IP parameter from Request URL using GEO IP
+        // Parse "ip" parameter from request URL using GEO IP
         var loc = geoip.lookup(url_parts.query.ip);
         var country = loc.country;
         var region = loc.region;
  
-        // Parse User Agent parameter from Request URL using UA-Parser
+        // Parse "user_agent" parameter from Request URL using UA-Parser
         var ua = useragent.parse(url_parts.query.user_agent);
         var browser = ua.family;
         var browser_version = ua.major;
         var os = ua.os;
         var device = ua.device;
   	
-    // Check to see if the referrer parameter is empty, if so then mark as New Visit
+		// Check to see if the "r" (referrer) parameter is empty, if so then mark as New Visit
+		// NOTE: assumes users are not tracked across domains - a user browsing between www.example.com and blog.example.com would be marked as a repeat visit, even if the www and blog site share no cachable files.
 		if (url_parts.query.r.length >= 1) { 
 			var visit_type = "repeat"; 
 			}
@@ -78,14 +81,18 @@ function (request, response) {
     response.writeHead( 204 );
     response.end();
  
-	//Debug me
-	console.log(root);
-	console.log(tld);
-	console.log(subdomain);
-	console.log(protocol);
+	//Debug me (remove for production use)
 	
-	console.log(country);	
-	console.log(region);	
+	// domain
+	console.log("root domain:" + root);
+	console.log("tld:" + tld);
+	console.log("subdomain:" + subdomain);
+	console.log("protocol:" + protocol);
+	// ip
+	console.log("country IP:" + country);	
+	console.log("region IP:" + region);	
+	// ua
+	console.log("useragent:" + ua);
 	
  
         
