@@ -107,7 +107,7 @@ else {
 		console.log("useragent:" + ua);
 	
 		//graphite
-		console.log("graphite pathname:" root+'.'+tld);
+		console.log("graphite pathname:" root + "." + tld);
         
 		
 		
