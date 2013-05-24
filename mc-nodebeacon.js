@@ -3,7 +3,6 @@
 // The following NodeJS modules are installed:
 // npm install node-statsd
 // npm install geoip-lite
-// npm install ua-parser
 // npm install ms
 // npm install tldtools
 // npm install useragent
@@ -118,13 +117,15 @@ else {
  
         //c.timing(root+'.'+tld+'.'+subdomain+'.pages.'+page_type+'.TTFB', t_resp);
         //c.timing(root+'.'+tld+'.'+subdomain+'.pages.'+page_type+'.Render', t_page);
-        c.timing(root+'.'+tld+'.'+subdomain+'.page_type.'+page_type+'.pageReady', t_done);
+        c.timing(root+'.'+tld+'.'+subdomain+'.page_types.'+page_type+'.pageReady', t_done);
  
         c.timing(root+'.'+tld+'.'+subdomain+'.geographical.'+country+'.'+region+'.pageReady', t_done);
         
         c.timing(root+'.'+tld+'.'+subdomain+'.browsers.'+browser+'.'+browser_version+'.pageReady', t_done);
  
-        c.timing(root+'.'+tld+'.'+subdomain+'.devices.'+device+'.pageReady', t_done);
+		//tracking devices in graphite could be VERY expensive, let's try OS instead
+        //c.timing(root+'.'+tld+'.'+subdomain+'.devices.'+device+'.pageReady', t_done);
+        c.timing(root+'.'+tld+'.'+subdomain+'.devices.'+os+'.pageReady', t_done);
  
         c.timing(root+'.'+tld+'.'+subdomain+'.visitors.'+visit_type+'.pageReady', t_done);
  
