@@ -114,19 +114,17 @@ else {
 		// Connect to StatsD (hostname, port number) and send timing data 
 		c = new StatsD('127.0.0.1',8125);
  
-        c.timing(root+'.'+tld+'.pages.'+page_type+'.serverResponse', t_resp);
-        c.timing(root+'.'+tld+'.pages.'+page_type+'.pageRender', t_page);
-        c.timing(root+'.'+tld+'.pages.'+page_type+'.pageDone', t_done);
+        //c.timing(root+'.'+tld+'.'+subdomain+'.pages.'+page_type+'.TTFB', t_resp);
+        //c.timing(root+'.'+tld+'.'+subdomain+'.pages.'+page_type+'.Render', t_page);
+        c.timing(root+'.'+tld+'.'+subdomain+'.page_type.'+page_type+'.pageReady', t_done);
  
-        c.timing(root+'.'+tld+'.geographical.'+country+'.pageDone', t_done);
-        c.timing(root+'.'+tld+'.geographical.'+country+'.'+region+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.'+subdomain+'.geographical.'+country+'.'+region+'.pageReady', t_done);
         
-        c.timing(root+'.'+tld+'.browsers.'+browser+'.pageDone', t_done);
-        c.timing(root+'.'+tld+'.browsers.'+browser+'.'+browser_version+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.'+subdomain+'.browsers.'+browser+'.'+browser_version+'.pageReady', t_done);
  
-        c.timing(root+'.'+tld+'.devices.'+device+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.'+subdomain+'.devices.'+device+'.pageReady', t_done);
  
-        c.timing(root+'.'+tld+'.visitors.'+visit_type+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.'+subdomain+'.visitors.'+visit_type+'.pageReady', t_done);
  
 	// set server to listen for requests at port 8080
 	}).listen( 8080 );
