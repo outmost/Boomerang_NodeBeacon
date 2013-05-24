@@ -42,8 +42,8 @@ else {
         var url_parts = url.parse(request.url,true);
  
         // Parse "u" parameter from request URL using tldtools
-        var url = url_parts.query.u;
-		var domain = tldtools.extract(url);
+        var rUrl = url_parts.query.u;
+		var domain = tldtools.extract(rUrl);
 		var root = domain.domain;
 		// get TLD (.com / .co.uk / .de ... etc)
 		var tld = domain.tld;
