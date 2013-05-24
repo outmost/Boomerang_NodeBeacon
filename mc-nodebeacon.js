@@ -41,9 +41,9 @@ else {
         // Parse Request URL
         var url_parts = url.parse(request.url,true);
  
-        // Parse "hostname" parameter from request URL using tldtools
-        var hostname = url_parts.query.hostname;
-		var domain = tldtools.extract(hostname);
+        // Parse "u" parameter from request URL using tldtools
+        var url = url_parts.query.u;
+		var domain = tldtools.extract(url);
 		var root = domain.domain;
 		// get TLD (.com / .co.uk / .de ... etc)
 		var tld = domain.tld;
@@ -106,24 +106,27 @@ else {
 		// ua
 		console.log("useragent:" + ua);
 	
- 
+		//graphite
+		console.log("graphite pathname:" root+'.'+tld);
         
+		
+		
 		// Connect to StatsD (hostname, port number) and send timing data 
 		c = new StatsD('127.0.0.1',8125);
  
-        c.timing(domain+'.pages.'+page_type+'.serverResponse', t_resp);
-        c.timing(domain+'.pages.'+page_type+'.pageRender', t_page);
-        c.timing(domain+'.pages.'+page_type+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.pages.'+page_type+'.serverResponse', t_resp);
+        c.timing(root+'.'+tld+'.pages.'+page_type+'.pageRender', t_page);
+        c.timing(root+'.'+tld+'.pages.'+page_type+'.pageDone', t_done);
  
-        c.timing(domain+'.geographical.'+country+'.pageDone', t_done);
-        c.timing(domain+'.geographical.'+country+'.'+region+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.geographical.'+country+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.geographical.'+country+'.'+region+'.pageDone', t_done);
         
-        c.timing(domain+'.browsers.'+browser+'.pageDone', t_done);
-        c.timing(domain+'.browsers.'+browser+'.'+browser_version+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.browsers.'+browser+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.browsers.'+browser+'.'+browser_version+'.pageDone', t_done);
  
-        c.timing(domain+'.devices.'+device+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.devices.'+device+'.pageDone', t_done);
  
-        c.timing(domain+'.visitors.'+visit_type+'.pageDone', t_done);
+        c.timing(root+'.'+tld+'.visitors.'+visit_type+'.pageDone', t_done);
  
 	// set server to listen for requests at port 8080
 	}).listen( 8080 );
