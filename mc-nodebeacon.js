@@ -13,12 +13,10 @@
 // Boomerang is configured to send custom parameters for "domain", "page_type", "user_status", "ip" and "user_agent".
 // http://lognormal.github.io/boomerang/doc/howtos/howto-5.html
  
- 
- 
 StatsD = require('node-statsd').StatsD;
 
 var tldtools = require('tldtools').init();
- 
+
 var sys = require ('util'),url = require('url'),http = require('http'),qs = require('querystring'),ms = require('ms'),geoip = require('geoip-lite'),useragent = require('useragent');
  
  
@@ -36,8 +34,9 @@ if (cluster.isMaster) {
   cluster.on("exit", function(worker, code, signal) {
     cluster.fork();
   });
-} else {
-  http.createServer(function(request, response) {
+} 
+else {
+	http.createServer(function(request, response) {
  
         // Parse Request URL
         var url_parts = url.parse(request.url,true);
@@ -48,13 +47,15 @@ if (cluster.isMaster) {
 		var root = domain.domain;
 		// get TLD (.com / .co.uk / .de ... etc)
 		var tld = domain.tld;
+		// replace periods in tld with underscores ready for graphite
+		var tld = tld.replace(/\./g, '_');
 		// check if subdomain (inc www), if no subdomain then assign to www
 		if(domain.subdomain.length < 1) { 
 			var subdomain = "www"; 
-			} 
+		} 
 		else { 
 			var subdomain = domain.subdomain; 
-			}
+		}
 		// http or https?
 		var protocol = domain.url_tokens.protocol;
 		
@@ -77,33 +78,33 @@ if (cluster.isMaster) {
 		// NOTE: assumes users are not tracked across domains - a user browsing between www.example.com and blog.example.com would be marked as a repeat visit, even if the www and blog site share no cachable files.
 		if (url_parts.query.r.length >= 1) { 
 			var visit_type = "repeat"; 
-			}
+		}
 		else { 
 			var visit_type = "new"; 
-			}
+		}
 		
-    // Parse load time parameters and convert to milliseconds using ms
-    var t_resp = ms(url_parts.query.t_resp);
-    var t_page = ms(url_parts.query.t_page);
-    var t_done = ms(url_parts.query.t_done);
+		// Parse load time parameters and convert to milliseconds using ms
+		var t_resp = ms(url_parts.query.t_resp);
+		var t_page = ms(url_parts.query.t_page);
+		var t_done = ms(url_parts.query.t_done);
  
  
-    // Send a 204 Response (no content)
-    response.writeHead( 204 );
-    response.end();
+		// Send a 204 Response (no content)
+		response.writeHead( 204 );
+		response.end();
  
-	//Debug me (remove for production use)
+		//Debug me (remove for production use)
 	
-	// domain
-	console.log("root domain:" + root);
-	console.log("tld:" + tld);
-	console.log("subdomain:" + subdomain);
-	console.log("protocol:" + protocol);
-	// ip
-	console.log("country IP:" + country);	
-	console.log("region IP:" + region);	
-	// ua
-	console.log("useragent:" + ua);
+		// domain
+		console.log("root domain:" + root);
+		console.log("tld:" + tld);
+		console.log("subdomain:" + subdomain);
+		console.log("protocol:" + protocol);
+		// ip
+		console.log("country IP:" + country);	
+		console.log("region IP:" + region);	
+		// ua
+		console.log("useragent:" + ua);
 	
  
         
@@ -124,6 +125,6 @@ if (cluster.isMaster) {
  
         c.timing(domain+'.visitors.'+visit_type+'.pageDone', t_done);
  
-// set server to listen for requests at port 8080
-  }).listen( 8080 );
+	// set server to listen for requests at port 8080
+	}).listen( 8080 );
 }
