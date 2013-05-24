@@ -71,8 +71,8 @@ else {
         var ua = useragent.parse(url_parts.query.user_agent);
         var browser = ua.family;
         var browser_version = ua.major;
-        var os = ua.os;
-        var device = ua.device;
+        var os = ua.os.family;
+        var device = ua.device.family;
   	
 		// Check to see if the "r" (referrer) parameter is empty, if so then mark as New Visit
 		// NOTE: assumes users are not tracked across domains - a user browsing between www.example.com and blog.example.com would be marked as a repeat visit, even if the www and blog site share no cachable files.
