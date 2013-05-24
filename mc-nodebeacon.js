@@ -21,6 +21,7 @@ var sys = require ('util'),url = require('url'),http = require('http'),qs = requ
  
  
 // Create Multi Core Server
+// credit: http://cjihrig.com/blog/scaling-node-js-applications/
 var cluster = require("cluster");
 var http = require("http");
 var numCPUs = require("os").cpus().length;
@@ -105,7 +106,8 @@ else {
 		console.log("region IP:" + region);	
 		// ua
 		console.log("useragent:" + ua);
-	
+		console.log("os:" + os);
+		console.log("device:" + device);
 		//graphite
 		console.log("graphite pathname:" + root + "." + tld);
         
