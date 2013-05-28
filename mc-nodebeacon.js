@@ -67,8 +67,8 @@ else {
         var country = loc.country;
         var region = loc.region;
  
-        // Parse "user_agent" parameter from Request URL using UA-Parser
-        var ua = useragent.parse(url_parts.query.user_agent);
+        // Parse "ua" parameter from Request URL using UA-Parser
+        var ua = useragent.parse(url_parts.query.ua);
         var browser = ua.family;
         var browser_version = ua.major;
         var os = ua.os.family;
